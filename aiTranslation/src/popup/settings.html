@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 翻译助手 - 设置</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 4px; }
+    body {
+      width: 400px; padding: 20px;
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #1a1a2e; color: #e0e0e0;
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .back-btn { color: #7b68ee; cursor: pointer; font-size: 13px; }
+    .back-btn:hover { text-decoration: underline; }
+    h2 { font-size: 16px; color: #7b68ee; }
+    label { font-size: 12px; color: #aaa; display: block; margin-bottom: 6px; }
+    input, select {
+      width: 100%; padding: 8px 10px; border-radius: 6px;
+      border: 1px solid #444; background: #16213e; color: #e0e0e0;
+      font-size: 13px; margin-bottom: 14px; outline: none;
+    }
+    input:focus, select:focus { border-color: #7b68ee; }
+    select { cursor: pointer; }
+    .btn {
+      width: 100%; padding: 9px; border-radius: 6px; border: none;
+      font-size: 14px; cursor: pointer; transition: background 0.2s; margin-bottom: 8px;
+    }
+    #saveBtn { background: #7b68ee; color: white; }
+    #saveBtn:hover { background: #6a57dd; }
+    .divider { border: none; border-top: 1px solid #2a2a4a; margin: 12px 0; }
+    #status { margin-top: 8px; font-size: 12px; text-align: center; min-height: 16px; color: #4caf50; }
+    #customModelGroup { display: none; margin-bottom: 14px; }
+    #customModelGroup input { margin-bottom: 6px; }
+    .custom-model-row { display: flex; gap: 6px; align-items: center; }
+    .custom-model-row input { flex: 1; margin-bottom: 0; }
+    #addModelBtn { background: #7b68ee; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+    #addModelBtn:hover { background: #6a57dd; }
+    .hint { font-size: 11px; color: #666; margin-top: 6px; margin-bottom: 6px; }
+    #savedModelList { margin-bottom: 8px; }
+    .saved-model-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; margin-bottom: 4px; background: #16213e; border-radius: 4px; border: 1px solid #333; font-size: 12px; }
+    .saved-model-item .model-name { color: #bbb; cursor: pointer; flex: 1; }
+    .saved-model-item .model-name:hover { color: #7b68ee; }
+    .saved-model-item .del-model { color: #666; cursor: pointer; font-size: 14px; margin-left: 8px; }
+    .saved-model-item .del-model:hover { color: #f44336; }
+    .section-title { font-size: 13px; color: #888; margin-bottom: 8px; }
+    .link-btn { color: #7b68ee; cursor: pointer; font-size: 12px; text-decoration: none; }
+    .link-btn:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="back-btn" id="closeBtn">&#x2190; 关闭</span>
+    <h2>设置</h2>
+    <span></span>
+  </div>
+
+  <hr class="divider" />
+  <div class="section-title">API 配置</div>
+
+  <label>API Key</label>
+  <input type="password" id="apiKey" placeholder="请输入阿里云百炼 API Key" />
+
+  <label>模型选择</label>
+  <select id="model">
+    <option value="qwen-turbo">qwen-turbo（快速）</option>
+    <option value="qwen-plus">qwen-plus（均衡）</option>
+    <option value="qwen-max">qwen-max（最强）</option>
+    <option value="__custom__">自定义模型...</option>
+  </select>
+
+  <div id="customModelGroup">
+    <div id="savedModelList"></div>
+    <div class="custom-model-row">
+      <input type="text" id="customModel" placeholder="输入模型 code" />
+      <button id="addModelBtn">+ 保存</button>
+    </div>
+    <div class="hint">点击列表中的模型名快速选用</div>
+  </div>
+
+  <button class="btn" id="saveBtn">保存设置</button>
+  <div id="status"></div>
+
+  <hr class="divider" />
+  <div class="section-title">数据管理</div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <button class="btn" id="exportBtn" style="background:#2a2a4a;color:#bbb;border:1px solid #444;font-size:13px;">导出历史</button>
+    <button class="btn" id="importBtn" style="background:#2a2a4a;color:#bbb;border:1px solid #444;font-size:13px;">导入历史</button>
+  </div>
+  <input type="file" id="importFile" accept=".json" style="display:none" />
+
+  <hr class="divider" />
+  <div style="text-align:center;margin-top:8px;">
+    <a class="link-btn" id="helpLink">查看使用指南</a>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

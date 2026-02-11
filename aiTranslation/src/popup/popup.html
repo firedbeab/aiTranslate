@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 翻译助手</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #5a5a8a; }
+    body {
+      width: 340px; padding: 16px 20px;
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #1a1a2e; color: #e0e0e0;
+    }
+    .title-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .title-bar h2 { font-size: 15px; color: #7b68ee; }
+    .title-bar .icons { display: flex; gap: 12px; }
+    .icon-btn { color: #666; cursor: pointer; font-size: 16px; transition: color 0.2s; }
+    .icon-btn:hover { color: #7b68ee; }
+
+    .api-warning {
+      background: #2a1a1a; border: 1px solid #5a3030; border-radius: 6px;
+      padding: 10px 12px; margin-bottom: 12px; font-size: 12px; color: #f0a0a0;
+      display: none;
+    }
+    .api-warning a { color: #7b68ee; cursor: pointer; text-decoration: underline; }
+
+    /* 模型快速切换 */
+    .model-row { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+    .model-row label { font-size: 11px; color: #888; white-space: nowrap; margin: 0; }
+    .model-row select {
+      flex: 1; padding: 5px 8px; border-radius: 5px;
+      border: 1px solid #444; background: #16213e; color: #e0e0e0;
+      font-size: 12px; outline: none; cursor: pointer;
+    }
+    .model-row select:focus { border-color: #7b68ee; }
+
+    .btn {
+      width: 100%; padding: 9px; border-radius: 6px; border: none;
+      font-size: 14px; cursor: pointer; transition: background 0.2s; margin-bottom: 8px;
+    }
+    #pageBtn { background: #2a2a4a; color: #bbb; border: 1px solid #444; }
+    #pageBtn:hover { background: #3a3a6a; color: #fff; }
+    #restoreBtn { background: #2a2a4a; color: #555; border: 1px solid #333; cursor: default; }
+    #restoreBtn.active { color: #f0c040; border-color: #f0c040; cursor: pointer; }
+    #restoreBtn.active:hover { background: #3a3a6a; }
+    #status { margin-top: 6px; margin-bottom: 6px; font-size: 12px; text-align: center; min-height: 16px; color: #4caf50; }
+    .divider { border: none; border-top: 1px solid #2a2a4a; margin: 10px 0; }
+
+    /* 历史记录 */
+    .history-section { margin-top: 4px; }
+    .history-header {
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; padding: 6px 0;
+    }
+    .history-header-left { display: flex; align-items: center; gap: 8px; }
+    .history-header-left span { font-size: 13px; color: #aaa; }
+    .history-toggle { font-size: 12px; color: #666; }
+    .refresh-icon {
+      font-size: 13px; color: #666; cursor: pointer; transition: color 0.2s;
+    }
+    .refresh-icon:hover { color: #7b68ee; }
+    .history-tabs { display: flex; gap: 0; margin-bottom: 8px; }
+    .history-tab { flex: 1; text-align: center; padding: 5px; font-size: 12px; cursor: pointer; border-bottom: 2px solid transparent; color: #888; }
+    .history-tab.active { color: #7b68ee; border-bottom-color: #7b68ee; }
+    #historyContent { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    #historyContent.expanded { max-height: 350px; overflow-y: auto; }
+    .history-item { border-bottom: 1px solid #2a2a4a; padding: 6px 4px; border-radius: 4px; cursor: pointer; transition: background 0.15s; }
+    .history-item:hover { background: #1e1e3a; }
+    .history-item .h-original { color: #7b68ee; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-item .h-preview { font-size: 12px; color: #ccc; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-item .h-time { font-size: 10px; color: #555; }
+    .fav-star { color: #f0c040; font-size: 11px; }
+    .history-empty { font-size: 12px; color: #555; text-align: center; padding: 12px 0; }
+    .clear-btn {
+      display: block; margin: 8px auto 0; background: transparent; color: #883333;
+      border: 1px solid #553333; font-size: 11px; padding: 4px 14px;
+      border-radius: 5px; cursor: pointer; transition: all 0.2s;
+    }
+    .clear-btn:hover { background: #3a1a1a; color: #ff5555; border-color: #ff5555; }
+  </style>
+</head>
+<body>
+  <div class="title-bar">
+    <h2>AI 翻译助手</h2>
+    <div class="icons">
+      <span class="icon-btn" id="settingsBtn" title="设置">&#x2699;</span>
+      <span class="icon-btn" id="helpBtn" title="使用指南">&#x003F;</span>
+    </div>
+  </div>
+
+  <div class="api-warning" id="apiWarning">
+    未检测到 API Key，划词翻译不可用。<br/>
+    请点击 <a id="goSettings">设置</a> 填写 API Key。
+  </div>
+
+  <div class="model-row">
+    <label>模型</label>
+    <select id="model"></select>
+  </div>
+
+  <button class="btn" id="pageBtn">整页翻译（含 iframe）</button>
+  <button class="btn" id="restoreBtn">还原页面（未翻译）</button>
+  <button class="btn" id="docModeBtn" style="background:#2a2a4a;color:#bbb;border:1px solid #444;">在线文档模式（关闭）</button>
+  <div id="status"></div>
+  <hr class="divider" />
+
+  <div class="history-section">
+    <div class="history-header" id="historyToggle">
+      <div class="history-header-left">
+        <span>历史记录</span>
+        <span class="refresh-icon" id="refreshBtn" title="刷新">&#x21BB;</span>
+      </div>
+      <span class="history-toggle" id="historyArrow">&#x25BC;</span>
+    </div>
+    <div id="historyContent">
+      <div class="history-tabs">
+        <div class="history-tab active" data-type="words">词汇</div>
+        <div class="history-tab" data-type="sentences">句子/段落</div>
+      </div>
+      <div id="historyList"></div>
+      <button class="clear-btn" id="clearBtn">清空全部历史记录</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

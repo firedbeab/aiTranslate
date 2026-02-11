@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 翻译助手 - 使用指南</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 4px; }
+    body { width: 460px; padding: 24px; font-family: "Microsoft YaHei", sans-serif; background: #1a1a2e; color: #e0e0e0; line-height: 1.8; font-size: 13px; }
+    h1 { font-size: 18px; color: #7b68ee; margin-bottom: 20px; text-align: center; }
+    h2 { font-size: 14px; color: #7b68ee; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #2a2a4a; }
+    p { margin-bottom: 8px; color: #ccc; }
+    .step { background: #16213e; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid #7b68ee; }
+    .step-title { color: #7b68ee; font-weight: bold; font-size: 12px; margin-bottom: 4px; }
+    code { background: #2a2a4a; padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+    a { color: #7b68ee; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .feature { display: flex; gap: 8px; margin-bottom: 6px; }
+    .feature-icon { color: #7b68ee; min-width: 18px; text-align: center; margin-top: 2px; }
+    .note { background: #1e1e3a; padding: 10px 14px; border-radius: 6px; margin: 12px 0; border: 1px solid #3a3a5a; }
+    .note-title { color: #f0c040; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .contact { text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid #2a2a4a; color: #888; font-size: 12px; }
+    .back-btn { display: inline-block; color: #7b68ee; cursor: pointer; font-size: 13px; margin-bottom: 16px; }
+    .back-btn:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <span class="back-btn" id="closeBtn">&#x2190; 关闭</span>
+  <h1>AI 翻译助手 - 使用指南</h1>
+  <h2>如何获取 API Key</h2>
+  <div class="step"><div class="step-title">第一步：注册阿里云账号</div><p>访问 <a href="https://bailian.console.aliyun.com/" target="_blank">阿里云百炼平台</a> 并注册/登录。</p></div>
+  <div class="step"><div class="step-title">第二步：开通百炼服务</div><p>进入控制台开通模型服务，新用户有免费额度。</p></div>
+  <div class="step"><div class="step-title">第三步：获取 API Key</div><p>左侧菜单「API Key 管理」创建并复制。</p></div>
+  <div class="step"><div class="step-title">第四步：填入插件</div><p>点击插件图标 > 设置 > 粘贴 API Key > 保存。</p></div>
+  <h2>功能说明</h2>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>划词翻译</strong> - 选中文字自动翻译，单词给简明释义，段落翻译全文。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>详细讲解</strong> - 点击「详细讲解」获取词性、释义、例句、用法。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>提取难词</strong> - 段落翻译后提取关键词，可逐个查看详解。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>整页翻译</strong> - 一键翻译页面（含 iframe），可还原。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>上下文分析</strong> - 自动捕获上下文提供更准确释义。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>流式输出</strong> - 翻译结果逐字显示，无需等待。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>动态内容监听</strong> - 整页翻译后自动监听页面新加载的内容并翻译，适合无限滚动页面。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>在线文档模式</strong> - 针对 Google Docs、Office Online 等无法划词翻译的在线文档，开启后复制内容即自动翻译，结果显示在右下角浮窗。</div></div>
+  <div class="feature"><span class="feature-icon">&#x25B6;</span><div><strong>历史记录</strong> - 自动保存，支持收藏/删除/导出/导入。</div></div>
+  <h2>推荐模型</h2>
+  <div class="step">
+    <p><code>qwen-turbo</code> - 速度快、价格低，推荐日常使用</p>
+    <p><code>qwen-plus</code> - 质量更好的均衡选择</p>
+    <p><code>qwen-max</code> - 最高质量，适合复杂内容</p>
+  </div>
+  <div class="note"><div class="note-title">已知限制</div><p>Google Docs、Office Online 等 Canvas 渲染的文档无法划词翻译，但可以使用「在线文档模式」：开启后复制文字即自动翻译。</p></div>
+  <h2>常见问题</h2>
+  <div class="step">
+    <p><strong>翻译没反应？</strong> - 检查 API Key 和账户余额。</p>
+    <p><strong>模型不存在？</strong> - 检查模型名称拼写。</p>
+    <p><strong>更新后报错？</strong> - 刷新页面即可。</p>
+  </div>
+  <div class="contact">
+    <p>联系：<a href="/cdn-cgi/l/email-protection#6b0e130a061b070e2b0e0c45080406"><span class="__cf_email__" data-cfemail="8ce9f4ede1fce0e9cce9eba2efe3e1">[email&#160;protected]</span>

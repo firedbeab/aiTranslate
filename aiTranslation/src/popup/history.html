@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>历史详情</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #5a5a8a; }
+    body {
+      width: 400px; min-height: 300px; padding: 20px;
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #1a1a2e; color: #e0e0e0;
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #2a2a4a;
+    }
+    .back-btn { cursor: pointer; color: #7b68ee; font-size: 13px; text-decoration: none; }
+    .back-btn:hover { text-decoration: underline; }
+    .actions { display: flex; gap: 8px; }
+    .actions button {
+      background: #2a2a4a; color: #888; border: 1px solid #333;
+      padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all 0.2s;
+    }
+    .actions button:hover { color: #7b68ee; border-color: #7b68ee; }
+    .actions button.fav-active { color: #f0c040; border-color: #f0c040; }
+    .actions button.del-btn:hover { color: #f44336; border-color: #f44336; }
+
+    .original-section { margin-bottom: 16px; }
+    .original-text { font-size: 13px; color: #aaa; line-height: 1.6; word-break: break-word; }
+    .original-text.truncated { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .expand-btn { color: #7b68ee; font-size: 11px; cursor: pointer; margin-top: 4px; display: inline-block; }
+    .expand-btn:hover { text-decoration: underline; }
+
+    .tabs { display: flex; gap: 0; margin-bottom: 16px; }
+    .tab {
+      flex: 1; text-align: center; padding: 8px; font-size: 13px;
+      cursor: pointer; border-bottom: 2px solid transparent; color: #888; transition: all 0.2s;
+    }
+    .tab.active { color: #7b68ee; border-bottom-color: #7b68ee; }
+    .tab:hover { color: #aaa; }
+
+    .content {
+      font-size: 13px; line-height: 1.8; word-break: break-word;
+      max-height: 400px; overflow-y: auto; padding-right: 4px;
+    }
+    .content strong { color: #7b68ee; }
+    .content code { background: #2a2a4a; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+    .no-content { color: #555; font-style: italic; }
+    .fetch-btn {
+      margin-top: 8px; background: #7b68ee; color: white; border: none;
+      padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 12px;
+    }
+    .fetch-btn:hover { background: #6a57dd; }
+    .time { font-size: 10px; color: #555; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a class="back-btn" id="backBtn">&#x2190; 返回列表</a>
+    <div class="actions">
+      <button id="favBtn">收藏</button>
+      <button id="delBtn" class="del-btn">删除</button>
+    </div>
+  </div>
+  <div class="original-section" id="originalSection"></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="content" id="content"></div>
+  <div class="time" id="timeInfo"></div>
+
+  <script src="history-detail.js"></script>
+</body>
+</html>
